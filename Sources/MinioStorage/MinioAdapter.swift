@@ -86,7 +86,7 @@ extension MinioAdapter {
     internal func getProperURL(bucket: String, object: String) throws -> URL {
         let host = self.region.host(self.host)
 
-        guard let url = URL(string: host + bucket.finished(with: "/") + object) else {
+        guard let url = URL(string: host.finished(with: "/") + bucket.finished(with: "/") + object) else {
             throw MinioAdapterError(identifier: "getProperURL", reason: "Couldnt not generate a valid URL path.", source: .capture())
         }
         return url
@@ -163,7 +163,7 @@ extension MinioAdapter {
 
     public func listObjects(in bucket: String, prefix: String?, on container: Container) throws -> EventLoopFuture<[ObjectInfo]> {
         let client = try container.make(Client.self)
-        var urlComponents = URLComponents(string: self.region.host)
+        var urlComponents = URLComponents(string: self.region.host(self.host))
         urlComponents?.path = "/" + bucket
         urlComponents?.queryItems = []
         urlComponents?.queryItems?.append(URLQueryItem(name: "list-type", value: "2"))
@@ -196,7 +196,7 @@ extension MinioAdapter {
                     size: Int($0["Size"] ?? "0"),
                     etag: $0["ETag"] ?? "",
                     lastModified: Date(string: $0["LastModified"] ?? ""),
-                    url: URL(string: self.region.host + bucket.finished(with: "/") + ($0["Key"] ?? ""))
+                    url: URL(string: self.region.host(self.host) + bucket.finished(with: "/") + ($0["Key"] ?? ""))
                 )
             })
         }
