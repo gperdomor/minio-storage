@@ -9,7 +9,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/gperdomor/storage-kit.git", from: "0.2.1"),
-        .package(url: "https://github.com/anthonycastelli/simplestoragesigner.git", .branch("master")),
+        .package(url: "https://github.com/anthonycastelli/simplestoragesigner.git", from: "1.0.0-rc"),
         .package(url: "https://github.com/tadija/AEXML.git", from: "4.3.0")
     ],
     targets: [
